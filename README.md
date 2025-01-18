@@ -1,6 +1,4 @@
-﻿# spring-security-default
-
- in-memory authentication
+in-memory authentication
 -------------------------
 	without password encryption - done
 	with password encryption - done
