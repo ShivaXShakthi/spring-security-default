@@ -1,6 +1,6 @@
-﻿# spring-security-default
-
- simple spring boot project creation - done
+default security
+----------------
+simple spring boot project creation - done
 	-get and post rest endpoint implementation - done
 	-testing 
 
