@@ -7,12 +7,14 @@ public class LoginResponse {
     private String username;
     private String token;
     private List<String> roles;
+    private RefreshToken refreshToken;
 
 
-    public LoginResponse(String token, List<String> roles, String username) {
+    public LoginResponse(String token, List<String> roles, String username, RefreshToken refreshToken) {
         this.token = token;
         this.roles = roles;
         this.username = username;
+        this.refreshToken = refreshToken;
     }
 
     public LoginResponse() {
@@ -40,5 +42,13 @@ public class LoginResponse {
 
     public void setRoles(List<String> roles) {
         this.roles = roles;
+    }
+
+    public RefreshToken getRefreshToken() {
+        return refreshToken;
+    }
+
+    public void setRefreshToken(RefreshToken refreshToken) {
+        this.refreshToken = refreshToken;
     }
 }

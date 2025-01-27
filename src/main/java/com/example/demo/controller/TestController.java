@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.bindings.ApiRequest;
-import com.example.demo.bindings.ApiResponse;
-import com.example.demo.bindings.LoginResponse;
+import com.example.demo.bindings.*;
+import com.example.demo.entity.RefreshToken;
+import com.example.demo.entity.Users;
 import com.example.demo.jwt.JwtUtils;
+import com.example.demo.service.RefreshTokenService;
+import com.example.demo.service.UsersService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,12 @@ public class TestController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+
+    @Autowired
+    private UsersService usersService;
 
     //user - role
     @GetMapping("/test")
@@ -63,20 +71,47 @@ public class TestController {
         }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-        String jwtToken = jwtUtils.generateTokenFromUsername(userDetails);
+        String username = userDetails.getUsername();
+        String jwtToken = jwtUtils.generateTokenFromUsername(username);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(username);
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
-
-        LoginResponse response = new LoginResponse(userDetails.getUsername(),roles, jwtToken);
-
+        com.example.demo.bindings.RefreshToken rt = new com.example.demo.bindings.RefreshToken();
+        BeanUtils.copyProperties(refreshToken,rt);
+        LoginResponse response = new LoginResponse(jwtToken,roles, userDetails.getUsername(), rt);
         return ResponseEntity.ok(response);
 
     }
 
+    @PostMapping("/refreshtoken")
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest request) throws Exception {
+        RefreshToken token = refreshTokenService.findByToken(request.getToken());
+        RefreshToken refreshToken = refreshTokenService.verifyExpiration(token);
+        Users userInfo = refreshToken.getUserInfo();
+        String refreshedToken = jwtUtils.generateTokenFromUsername(userInfo.getUsername());
+        RefreshTokenResponse response = new RefreshTokenResponse(refreshedToken);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/registeruser")
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest user){
+        Users users = usersService.registerUser(user);
+        return ResponseEntity.ok("User created succesfully");
+    }
+
+    @PostMapping("/registeradmin")
+    public ResponseEntity<?> registerAdmin(@RequestBody UserRequest user){
+        Users users = usersService.registerAdmin(user);
+        return ResponseEntity.ok("admin created succesfully");
+    }
+
+    @PostMapping("/passwordreset")
+    public ResponseEntity<?> resetPassword(@RequestBody PasswordReset passwordReset){
+        Users user = usersService.passwordReset(passwordReset);
+        return ResponseEntity.ok(user);
+    }
 
 }

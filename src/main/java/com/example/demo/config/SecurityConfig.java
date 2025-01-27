@@ -56,7 +56,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)requests
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/token").permitAll()
-                //.requestMatchers("/signup").permitAll()
+                .requestMatchers("/registeruser").permitAll()
+                .requestMatchers("/registeradmin").permitAll()
                 .anyRequest()).authenticated());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
@@ -83,49 +84,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-
-
-    @Bean
-    public CommandLineRunner initData(UserDetailsService userDetailsService) {
-        return args -> {
-            // Create Users
-            Users user1 = new Users();
-            user1.setUsername("user1");
-            user1.setPassword(passwordEncoder().encode("password1"));
-            user1.setEnabled(true);
-            user1.setFirstname("John");
-            user1.setLastname("Doe");
-            user1.setEmail("user1@example.com");
-            user1.setPhno(123456789);
-
-            usersRepo.save(user1);
-
-            // In your CommandLineRunner or a service
-            Authorities userAuthority = new Authorities();
-            userAuthority.setUser(user1);  // Associate user1 with this authority
-            userAuthority.setAuthority("ROLE_USER");
-            authorityRepo.save(userAuthority);
-
-            // Create Users
-            Users user2 = new Users();
-            user2.setUsername("user2");
-            user2.setPassword(passwordEncoder().encode("password2"));
-            user2.setEnabled(true);
-            user2.setFirstname("John");
-            user2.setLastname("Doe");
-            user2.setEmail("user1@example.com");
-            user2.setPhno(123456789);
-
-            usersRepo.save(user2);
-
-            // In your CommandLineRunner or a service
-            Authorities userAuthority1 = new Authorities();
-            userAuthority1.setUser(user2);  // Associate user1 with this authority
-            userAuthority1.setAuthority("ROLE_ADMIN");
-            authorityRepo.save(userAuthority1);
-
-        };
-    }
-
 
 }
