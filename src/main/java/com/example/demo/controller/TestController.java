@@ -4,8 +4,8 @@ import com.example.demo.bindings.*;
 import com.example.demo.entity.RefreshToken;
 import com.example.demo.entity.Users;
 import com.example.demo.jwt.JwtUtils;
-import com.example.demo.service.RefreshTokenService;
-import com.example.demo.service.UsersService;
+import com.example.demo.service.RefreshTokenServiceImpl;
+import com.example.demo.service.UsersServiceImpl;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,10 +34,10 @@ public class TestController {
     private AuthenticationManager authenticationManager;
     
     @Autowired
-    private RefreshTokenService refreshTokenService;
+    private RefreshTokenServiceImpl refreshTokenService;
 
     @Autowired
-    private UsersService usersService;
+    private UsersServiceImpl usersService;
 
     //user - role
     @GetMapping("/test")

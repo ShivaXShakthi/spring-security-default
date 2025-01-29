@@ -50,3 +50,17 @@ create table refresh (
     users_id int not null,
     constraint fk_refresh_users foreign key(users_id) references users(id)
 );
+
+CREATE TABLE event_details (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,  -- Primary key, auto-incrementing
+    mela VARCHAR(255),                       -- Mela (event name)
+    prasanga VARCHAR(255),                   -- Prasanga (context or details)
+    place VARCHAR(255),                      -- Place of the event
+    location VARCHAR(255),                   -- Specific location (if applicable)
+    event_date DATE,                         -- Date of the event
+    event_time TIME,                         -- Time of the event
+    event_type VARCHAR(100),                 -- Type of the event
+    category VARCHAR(100),                   -- Category (e.g., cultural, religious)
+    image VARCHAR(512)                       -- S3 URL of the image
+);
+

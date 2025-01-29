@@ -1,6 +1,6 @@
 package com.example.demo.jwt;
 
-import com.example.demo.service.MyUserDetailsService;
+import com.example.demo.service.MyUserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private JwtUtils jwtUtils;
 
     @Autowired
-    private MyUserDetailsService userDetailsService;
+    private MyUserDetailsServiceImpl userDetailsService;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenFilter.class);
 

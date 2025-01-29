@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UsersService {
+public class UsersServiceImpl {
 
     @Autowired
     private PasswordEncoder passwordEncoder;

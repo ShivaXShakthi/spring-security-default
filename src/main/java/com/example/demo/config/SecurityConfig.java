@@ -1,20 +1,16 @@
 package com.example.demo.config;
 
-import com.example.demo.entity.Authorities;
-import com.example.demo.entity.Users;
 import com.example.demo.jwt.AuthJwtEntryPoint;
 import com.example.demo.jwt.AuthTokenFilter;
 import com.example.demo.repo.AuthorityRepo;
 import com.example.demo.repo.UsersRepo;
-import com.example.demo.service.MyUserDetailsService;
+import com.example.demo.service.MyUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +19,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,7 +30,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private MyUserDetailsServiceImpl myUserDetailsService;
 
     @Autowired
     private AuthTokenFilter authTokenFilter;
