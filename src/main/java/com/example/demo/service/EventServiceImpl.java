@@ -7,6 +7,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class EventServiceImpl implements EventService {
 
@@ -33,4 +37,27 @@ public class EventServiceImpl implements EventService {
     public void deleteEvent(Integer eventId) {
         eventRepo.deleteById(eventId);
     }
+
+    @Override
+    public EventDetailsRequest getEvent(Integer eventId) {
+        Optional<Event> evtOpt = eventRepo.findById(eventId);
+        Event event = evtOpt.get();
+        EventDetailsRequest evtDet = new EventDetailsRequest();
+        BeanUtils.copyProperties(event, evtDet);
+        return evtDet;
+    }
+
+    @Override
+    public List<EventDetailsRequest> getEvents() {
+        List<Event> allEvts = eventRepo.findAll();
+        List<EventDetailsRequest> evtDets = new ArrayList<>();
+        allEvts.forEach((evt) -> {
+            EventDetailsRequest evtDet = new EventDetailsRequest();
+            BeanUtils.copyProperties(evt, evtDet);
+            evtDets.add(evtDet);
+        });
+        return evtDets;
+    }
+
+
 }
