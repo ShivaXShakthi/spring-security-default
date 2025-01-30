@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
 import com.example.demo.bindings.EventDetailsRequest;
-import com.example.demo.entity.Event;
 import com.example.demo.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class EventController {
@@ -29,6 +30,18 @@ public class EventController {
     public ResponseEntity<?> deleteEvt(@PathVariable Integer id){
         eventService.deleteEvent(id);
         return ResponseEntity.ok("deleted...");
+    }
+
+    @GetMapping("/event")
+    public ResponseEntity<?> getEvt(@PathVariable Integer id){
+        EventDetailsRequest event = eventService.getEvent(id);
+        return ResponseEntity.ok(event);
+    }
+
+    @GetMapping("/events")
+    public ResponseEntity<?> getEvts(){
+        List<EventDetailsRequest> events = eventService.getEvents();
+        return ResponseEntity.ok(events);
     }
 
 
