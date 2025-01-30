@@ -26,13 +26,13 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
-    @DeleteMapping("/event")
+    @DeleteMapping("/event/{id}")
     public ResponseEntity<?> deleteEvt(@PathVariable Integer id){
         eventService.deleteEvent(id);
         return ResponseEntity.ok("deleted...");
     }
 
-    @GetMapping("/event")
+    @GetMapping("/event/{id}")
     public ResponseEntity<?> getEvt(@PathVariable Integer id){
         EventDetailsRequest event = eventService.getEvent(id);
         return ResponseEntity.ok(event);
