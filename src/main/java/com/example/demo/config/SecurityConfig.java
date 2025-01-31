@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .requestMatchers("/token").permitAll()
                 .requestMatchers("/registeruser").permitAll()
                 .requestMatchers("/registeradmin").permitAll()
+                .requestMatchers("/events").permitAll()
                 .anyRequest()).authenticated());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
