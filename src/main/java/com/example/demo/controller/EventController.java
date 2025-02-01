@@ -20,13 +20,14 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
-    @PutMapping("/event")
-    public ResponseEntity<?> updateEvt(@RequestBody EventDetailsRequest eventDetailsRequest){
-        EventDetailsRequest event = eventService.updateEvent(eventDetailsRequest);
+    @PutMapping("/event/{id}")
+    public ResponseEntity<?> updateEvt(@PathVariable Integer id, @RequestBody EventDetailsRequest eventDetailsRequest){
+        EventDetailsRequest event = eventService.updateEvent(id,eventDetailsRequest);
         return ResponseEntity.ok(event);
     }
 
     @DeleteMapping("/event/{id}")
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     public ResponseEntity<?> deleteEvt(@PathVariable Integer id){
         eventService.deleteEvent(id);
         return ResponseEntity.ok("deleted...");

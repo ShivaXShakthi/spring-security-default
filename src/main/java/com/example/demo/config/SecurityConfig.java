@@ -8,6 +8,7 @@ import com.example.demo.service.MyUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -54,6 +55,8 @@ public class SecurityConfig {
                 .requestMatchers("/registeruser").permitAll()
                 .requestMatchers("/registeradmin").permitAll()
                 .requestMatchers("/events").permitAll()
+                .requestMatchers("/event/**").permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest()).authenticated());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.addFilterBefore(authTokenFilter, UsernamePasswordAuthenticationFilter.class);
