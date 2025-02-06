@@ -83,7 +83,6 @@ public class TestController {
         BeanUtils.copyProperties(refreshToken,rt);
         LoginResponse response = new LoginResponse(jwtToken,roles, userDetails.getUsername(), rt);
         return ResponseEntity.ok(response);
-
     }
 
     @PostMapping("/refreshtoken")
@@ -97,6 +96,7 @@ public class TestController {
     }
 
     @PostMapping("/registeruser")
+    @CrossOrigin(origins = "http://localhost:5173", allowedHeaders = "*", allowCredentials = "true")
     public ResponseEntity<?> registerUser(@RequestBody UserRequest user){
         Users users = usersService.registerUser(user);
         return ResponseEntity.ok("User created succesfully");

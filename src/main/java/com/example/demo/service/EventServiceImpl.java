@@ -6,9 +6,11 @@ import com.example.demo.repo.EventRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -17,11 +19,17 @@ public class EventServiceImpl implements EventService {
     @Autowired
     private EventRepo eventRepo;
 
+    @Autowired
+    private MediaAssetService assetService;
+
 
     @Override
-    public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest) {
+    public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest, MultipartFile image) {
+        Map map = assetService.uploadImage(image);
+        System.out.println("map > "+map);
         Event evt = new Event();
         BeanUtils.copyProperties(eventDetailsRequest,evt);
+        evt.setImage((String) map.get("secure_url"));
         Event savedEvt = eventRepo.save(evt);
         EventDetailsRequest evtDet = new EventDetailsRequest();
         BeanUtils.copyProperties(savedEvt, evtDet);

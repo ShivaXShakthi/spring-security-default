@@ -3,8 +3,10 @@ package com.example.demo.controller;
 import com.example.demo.bindings.EventDetailsRequest;
 import com.example.demo.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -14,9 +16,9 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
-    @PostMapping("/event")
-    public ResponseEntity<?> createEvt(@RequestBody EventDetailsRequest eventDetailsRequest){
-        EventDetailsRequest event = eventService.createEvent(eventDetailsRequest);
+    @PostMapping(value = "/event" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createEvt(@RequestPart("eventDetails") EventDetailsRequest eventDetailsRequest,@RequestPart("image") MultipartFile image){
+        EventDetailsRequest event = eventService.createEvent(eventDetailsRequest, image);
         return ResponseEntity.ok(event);
     }
 
