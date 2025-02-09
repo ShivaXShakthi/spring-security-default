@@ -9,7 +9,7 @@ import java.util.List;
 public interface EventService {
 
     public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest, MultipartFile image);
-    public EventDetailsRequest updateEvent(Integer eventId,EventDetailsRequest eventDetailsRequest);
+    public EventDetailsRequest updateEvent(Integer eventId,EventDetailsRequest eventDetailsRequest, MultipartFile image);
     public void deleteEvent(Integer eventId);
     public EventDetailsRequest getEvent(Integer eventId);
     public List<EventDetailsRequest> getEvents();

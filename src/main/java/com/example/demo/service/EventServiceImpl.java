@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -25,11 +22,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest, MultipartFile image) {
-        Map map = assetService.uploadImage(image);
-        System.out.println("map > "+map);
         Event evt = new Event();
         BeanUtils.copyProperties(eventDetailsRequest,evt);
-        evt.setImage((String) map.get("secure_url"));
+        if(Objects.nonNull(image)){
+            Map map = assetService.uploadImage(image);
+            System.out.println("map > "+map);
+            evt.setImage((String) map.get("secure_url"));
+        }
         Event savedEvt = eventRepo.save(evt);
         EventDetailsRequest evtDet = new EventDetailsRequest();
         BeanUtils.copyProperties(savedEvt, evtDet);
@@ -37,12 +36,17 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDetailsRequest updateEvent(Integer eventId,EventDetailsRequest eventDetailsRequest) {
+    public EventDetailsRequest updateEvent(Integer eventId,EventDetailsRequest eventDetailsRequest, MultipartFile image) {
         EventDetailsRequest existingData = getEvent(eventId);
         BeanUtils.copyProperties(eventDetailsRequest, existingData);
         Event evt = new Event();
         BeanUtils.copyProperties(eventDetailsRequest,evt);
         evt.setEventId(eventId);
+        if(Objects.nonNull(image)){
+            Map map = assetService.uploadImage(image);
+            System.out.println("map > "+map);
+            evt.setImage((String) map.get("secure_url"));
+        }
         Event savedEvt = eventRepo.save(evt);
         EventDetailsRequest evtDet = new EventDetailsRequest();
         BeanUtils.copyProperties(savedEvt, evtDet);
