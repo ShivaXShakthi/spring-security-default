@@ -54,6 +54,29 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest) {
+        Event evt = new Event();
+        BeanUtils.copyProperties(eventDetailsRequest,evt);
+        Event savedEvt = eventRepo.save(evt);
+        EventDetailsRequest evtDet = new EventDetailsRequest();
+        BeanUtils.copyProperties(savedEvt, evtDet);
+        return evtDet;
+    }
+
+    @Override
+    public EventDetailsRequest updateEvent(Integer eventId, EventDetailsRequest eventDetailsRequest) {
+        EventDetailsRequest existingData = getEvent(eventId);
+        BeanUtils.copyProperties(eventDetailsRequest, existingData);
+        Event evt = new Event();
+        BeanUtils.copyProperties(eventDetailsRequest,evt);
+        evt.setEventId(eventId);
+        Event savedEvt = eventRepo.save(evt);
+        EventDetailsRequest evtDet = new EventDetailsRequest();
+        BeanUtils.copyProperties(savedEvt, evtDet);
+        return evtDet;
+    }
+
+    @Override
     public void deleteEvent(Integer eventId) {
         eventRepo.deleteById(eventId);
     }

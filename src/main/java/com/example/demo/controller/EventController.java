@@ -2,9 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.bindings.EventDetailsRequest;
 import com.example.demo.service.EventService;
+import com.example.demo.service.ImageUploadServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,9 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private ImageUploadServiceImpl imageUploadService;
 
     @PostMapping(value = "/event" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createEvt( @RequestPart("eventDetails") String eventDetailsJson,@RequestPart("image") MultipartFile image) throws JsonProcessingException {
@@ -59,6 +64,28 @@ public class EventController {
     public ResponseEntity<?> getEvts(){
         List<EventDetailsRequest> events = eventService.getEvents();
         return ResponseEntity.ok(events);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
+        try {
+            String imageUrl = imageUploadService.uploadImage(file);
+            return ResponseEntity.ok().body(imageUrl);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
+        }
+    }
+
+    @PostMapping("/evt")
+    public ResponseEntity<?> createEvent(@RequestBody EventDetailsRequest eventDetailsRequest ) throws JsonProcessingException {
+        EventDetailsRequest event = eventService.createEvent(eventDetailsRequest);
+        return ResponseEntity.ok(event);
+    }
+
+    @PutMapping("/evt/{id}")
+    public ResponseEntity<?> updateEvent(@PathVariable Integer id, @RequestBody EventDetailsRequest eventDetailsRequest) throws JsonProcessingException {
+        EventDetailsRequest event = eventService.updateEvent(id,eventDetailsRequest);
+        return ResponseEntity.ok(event);
     }
 
 
