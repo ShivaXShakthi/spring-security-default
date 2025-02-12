@@ -28,7 +28,7 @@ create table users (
     firstname varchar(120),
     lastname varchar(120),
     email varchar(120),
-    phno int
+    phno bigint
 );
 
 -- Create the authorities table

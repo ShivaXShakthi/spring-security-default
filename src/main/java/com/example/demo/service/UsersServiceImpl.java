@@ -32,7 +32,7 @@ public class UsersServiceImpl {
         user.setFirstname(request.getFirstName());
         user.setLastname(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPhno(request.getPhno());
+        user.setPhno(Long.valueOf(request.getPhno()));
 
         usersRepo.save(user);
 
@@ -41,7 +41,6 @@ public class UsersServiceImpl {
         userAuthority.setUser(user);  // Associate user1 with this authority
         userAuthority.setAuthority("ROLE_USER");
         authorityRepo.save(userAuthority);
-
         return user;
     }
 
@@ -53,7 +52,7 @@ public class UsersServiceImpl {
         user.setFirstname(request.getFirstName());
         user.setLastname(request.getLastName());
         user.setEmail(request.getEmail());
-        user.setPhno(request.getPhno());
+        user.setPhno(Long.valueOf(request.getPhno()));
 
         usersRepo.save(user);
 
@@ -65,16 +64,25 @@ public class UsersServiceImpl {
         return user;
     }
 
-    public Users passwordReset(PasswordReset passwordReset){
+    public Boolean passwordReset(PasswordReset passwordReset){
         Optional<Users> usersOptional = usersRepo.findByUsername(passwordReset.getUsername());
         if(usersOptional.isPresent()){
             Users user = usersOptional.get();
             user.setPassword(passwordEncoder.encode(passwordReset.getPassword()));
             usersRepo.save(user);
-            return user;
+            return true;
         } else {
-            throw new RuntimeException("User is not present");
+            return false;
         }
     }
 
+    public boolean verifyUser(String username, String email, Long phno) {
+        Optional<Users> user = usersRepo.findByUsernameAndEmailAndPhno(username, email, phno);
+        return user.isPresent();
+    }
+
+    public boolean existsByUsername(String username) {
+        Optional<Users> usersOptional = usersRepo.findByUsername(username);
+        return usersOptional.isPresent();
+    }
 }

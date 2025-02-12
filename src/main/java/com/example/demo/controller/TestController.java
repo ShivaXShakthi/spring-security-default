@@ -110,8 +110,28 @@ public class TestController {
 
     @PostMapping("/passwordreset")
     public ResponseEntity<?> resetPassword(@RequestBody PasswordReset passwordReset){
-        Users user = usersService.passwordReset(passwordReset);
-        return ResponseEntity.ok(user);
+        boolean isReset = usersService.passwordReset(passwordReset);
+        if (isReset) {
+            return ResponseEntity.ok("Password reset successfully!");
+        } else {
+            return ResponseEntity.status(404).body("User not found.");
+        }
+    }
+
+    @PostMapping("/verify-user")
+    public ResponseEntity<?> verifyUser(@RequestBody VerifyUserRequest request) {
+        boolean isVerified = usersService.verifyUser(request.getUsername(), request.getEmail(), request.getPhone());
+        if (isVerified) {
+            return ResponseEntity.ok("User verified.");
+        } else {
+            return ResponseEntity.status(404).body("User details do not match.");
+        }
+    }
+
+    @GetMapping("/check-username")
+    public ResponseEntity<Boolean> checkUsername(@RequestParam String username) {
+        boolean exists = usersService.existsByUsername(username);
+        return ResponseEntity.ok(exists);
     }
 
 }

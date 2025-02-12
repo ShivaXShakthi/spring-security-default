@@ -8,12 +8,12 @@ public class UserRequest {
     private String firstName;
     private String lastName;
     private String email;
-    private Integer phno;
+    private Long phno;
 
     public UserRequest() {
     }
 
-    public UserRequest(String username, String password, Boolean enabled, String firstName, String lastName, String email, Integer phno) {
+    public UserRequest(String username, String password, Boolean enabled, String firstName, String lastName, String email, Long phno) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
@@ -71,11 +71,11 @@ public class UserRequest {
         this.email = email;
     }
 
-    public Integer getPhno() {
+    public Long getPhno() {
         return phno;
     }
 
-    public void setPhno(Integer phno) {
+    public void setPhno(Long phno) {
         this.phno = phno;
     }
 }

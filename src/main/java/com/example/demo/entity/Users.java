@@ -35,7 +35,7 @@ public class Users implements UserDetails {
     private String email;
 
     @Column(length=10)
-    private int phno;
+    private Long phno;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)  // Fetch the authorities eagerly
     private List<Authorities> authorities;
@@ -121,11 +121,11 @@ public class Users implements UserDetails {
         this.email = email;
     }
 
-    public int getPhno() {
+    public Long getPhno() {
         return phno;
     }
 
-    public void setPhno(int phno) {
+    public void setPhno(Long phno) {
         this.phno = phno;
     }
 
