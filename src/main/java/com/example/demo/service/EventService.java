@@ -11,8 +11,10 @@ public interface EventService {
     public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest, MultipartFile image);
     public EventDetailsRequest updateEvent(Integer eventId,EventDetailsRequest eventDetailsRequest, MultipartFile image);
     public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest);
+    public Boolean createEvents(List<EventDetailsRequest> eventDetailsRequests);
     public EventDetailsRequest updateEvent(Integer eventId,EventDetailsRequest eventDetailsRequest);
     public void deleteEvent(Integer eventId);
     public EventDetailsRequest getEvent(Integer eventId);
     public List<EventDetailsRequest> getEvents();
+    public List<EventDetailsRequest> searchEvents(String query);
 }

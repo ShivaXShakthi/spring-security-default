@@ -64,6 +64,12 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public Boolean createEvents(List<EventDetailsRequest> eventDetailsRequests) {
+        eventDetailsRequests.forEach((eventDetailsRequest) -> createEvent(eventDetailsRequest));
+        return true;
+    }
+
+    @Override
     public EventDetailsRequest updateEvent(Integer eventId, EventDetailsRequest eventDetailsRequest) {
         EventDetailsRequest existingData = getEvent(eventId);
         BeanUtils.copyProperties(eventDetailsRequest, existingData);
@@ -101,6 +107,19 @@ public class EventServiceImpl implements EventService {
         });
         return evtDets;
     }
+
+    public List<EventDetailsRequest> searchEvents(String query) {
+        List<Event> allEvts = eventRepo.searchEvents(query);
+        List<EventDetailsRequest> evtDets = new ArrayList<>();
+        allEvts.forEach((evt) -> {
+            EventDetailsRequest evtDet = new EventDetailsRequest();
+            BeanUtils.copyProperties(evt, evtDet);
+            evtDets.add(evtDet);
+        });
+        return evtDets;
+    }
+
+
 
 
 }

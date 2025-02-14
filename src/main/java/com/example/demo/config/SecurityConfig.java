@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .requestMatchers("/verify-user").permitAll()
                 .requestMatchers("/passwordreset").permitAll()
                 .requestMatchers("/check-username").permitAll()
+                .requestMatchers("/search").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .anyRequest()).authenticated());
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

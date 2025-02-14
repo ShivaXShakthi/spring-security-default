@@ -82,10 +82,21 @@ public class EventController {
         return ResponseEntity.ok(event);
     }
 
+    @PostMapping("/evts")
+    public ResponseEntity<?> createEvents(@RequestBody List<EventDetailsRequest> eventDetailsRequests ) throws JsonProcessingException {
+        eventService.createEvents(eventDetailsRequests);
+        return ResponseEntity.ok("Success");
+    }
+
     @PutMapping("/evt/{id}")
     public ResponseEntity<?> updateEvent(@PathVariable Integer id, @RequestBody EventDetailsRequest eventDetailsRequest) throws JsonProcessingException {
         EventDetailsRequest event = eventService.updateEvent(id,eventDetailsRequest);
         return ResponseEntity.ok(event);
+    }
+
+    @GetMapping("/search")
+    public List<EventDetailsRequest> searchEvents(@RequestParam String query) {
+        return eventService.searchEvents(query);
     }
 
 
