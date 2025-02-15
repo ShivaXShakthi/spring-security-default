@@ -64,3 +64,10 @@ CREATE TABLE event_details (
     image VARCHAR(512)                       -- S3 URL of the image
 );
 
+
+CREATE TABLE default_images (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    image_url VARCHAR(255) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+

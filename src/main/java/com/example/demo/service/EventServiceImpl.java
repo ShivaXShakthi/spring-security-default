@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.bindings.EventDetailsRequest;
+import com.example.demo.entity.DefaultImage;
 import com.example.demo.entity.Event;
+import com.example.demo.repo.DefaultImageRepository;
 import com.example.demo.repo.EventRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class EventServiceImpl implements EventService {
 
     @Autowired
     private MediaAssetService assetService;
+
+    @Autowired
+    private DefaultImageRepository defaultImageRepository;
 
 
     @Override
@@ -56,6 +61,13 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDetailsRequest createEvent(EventDetailsRequest eventDetailsRequest) {
         Event evt = new Event();
+        if(Objects.isNull(eventDetailsRequest.getImage()) || eventDetailsRequest.getImage().isEmpty() || eventDetailsRequest.getImage().isBlank()){
+            List<DefaultImage> all = defaultImageRepository.findAll();
+            if(!all.isEmpty()){
+                DefaultImage defaultImage = all.get(0);
+                eventDetailsRequest.setImage(defaultImage.getImageUrl());
+            }
+        }
         BeanUtils.copyProperties(eventDetailsRequest,evt);
         Event savedEvt = eventRepo.save(evt);
         EventDetailsRequest evtDet = new EventDetailsRequest();

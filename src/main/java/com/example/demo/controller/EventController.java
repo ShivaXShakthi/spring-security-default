@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import com.example.demo.bindings.DefaultImg;
 import com.example.demo.bindings.EventDetailsRequest;
+import com.example.demo.entity.DefaultImage;
+import com.example.demo.repo.DefaultImageRepository;
 import com.example.demo.service.EventService;
 import com.example.demo.service.ImageUploadServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,6 +26,9 @@ public class EventController {
 
     @Autowired
     private ImageUploadServiceImpl imageUploadService;
+
+    @Autowired
+    private DefaultImageRepository defaultImageRepository;
 
     @PostMapping(value = "/event" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createEvt( @RequestPart("eventDetails") String eventDetailsJson,@RequestPart("image") MultipartFile image) throws JsonProcessingException {
@@ -97,6 +103,33 @@ public class EventController {
     @GetMapping("/search")
     public List<EventDetailsRequest> searchEvents(@RequestParam String query) {
         return eventService.searchEvents(query);
+    }
+
+    @PostMapping("/default-image")
+    public ResponseEntity<?> uploadDefaultImage(@RequestBody DefaultImg dImg) {
+        try {
+            List<DefaultImage> all = defaultImageRepository.findAll();
+            DefaultImage defaultImage;
+            if(!all.isEmpty()){
+                defaultImage = all.get(0);
+                defaultImage.setImageUrl(dImg.getImageUrl());
+            } else{
+                defaultImage = new DefaultImage(dImg.getImageUrl());
+            }
+            DefaultImage savedImg = defaultImageRepository.save(defaultImage);
+            return ResponseEntity.ok().body(savedImg.getImageUrl());
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Image upload failed");
+        }
+
+    }
+
+    @GetMapping("/default-image")
+    public ResponseEntity<String> getDefaultImages() {
+        List<DefaultImage> images = defaultImageRepository.findAll();
+        DefaultImage image = images.get(0);
+        return ResponseEntity.ok(image.getImageUrl());
     }
 
 
